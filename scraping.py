@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # Import Splinter, BeautifulSoup, and Pandas
 from splinter import Browser
 from bs4 import BeautifulSoup as soup
@@ -22,6 +19,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        'hemispheres': mars_hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -99,6 +97,23 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+def mars_hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+
+  
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    for image in image_list:
+        url = image.find('a')['href']
+        titles = image.find('div', class_='description').find('a').find('h3').text
+        full_url = 'https://marshemispheres.com/'+ url 
+        browser.visit(full_url)
+        html = browser.html
+        news_soup = soup(html, 'html.parser')
+        full_image = news_soup.find('div', class_='downloads').find('ul').find('li').find('a')['href']
+        hemisphere_image_urls.append({'title':titles, 'image_url':full_image})
+    return  hemisphere_image_urls
 
 if __name__ == "__main__":
 
