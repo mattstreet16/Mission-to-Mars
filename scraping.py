@@ -102,7 +102,16 @@ def mars_hemispheres(browser):
     # 1. Use browser to visit the URL 
     url = 'https://marshemispheres.com/'
 
-  
+    browser.visit(url)
+    # Set up the HTML parser:
+    html = browser.html
+    new_soup = soup(html, 'html.parser')
+
+    image_list = new_soup.find_all('div', class_='item')
+    image_list
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
     # 3. Write code to retrieve the image urls and titles for each hemisphere.
     for image in image_list:
         url = image.find('a')['href']
